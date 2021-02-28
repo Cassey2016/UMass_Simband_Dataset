@@ -1,3 +1,4 @@
+% Last Modification: Dong, 02/28/2021.
 function [refECG_pkloc,wbwrefHR] = my_ECG_Peak_Detection_concise(output_data,fs,Ref_ECG_buffer)
 % unload data
 new_ECG_peak_loc = output_data.new_ECG_peak_loc;
@@ -36,15 +37,12 @@ function [refECG_pkloc,wbwrefHR] = my_ECG_ref_buffer(new_ECG_peak_loc,my_Simband
             || strcmp(my_Simband_datafilename,'4015'))
 
         temp_idx = find(new_ECG_peak_loc >= iiii_ECG_start & new_ECG_peak_loc <= iiii_ECG_end);
-        refECG_pkloc = new_ECG_peak_loc(temp_idx) - iiii_ECG_start;
+        refECG_pkloc = new_ECG_peak_loc(temp_idx) - iiii_ECG_start + 1; % Added 1 sample on 02/28/2021.
         wbwrefHR = 60./diff(refECG_pkloc)*fs;
-    elseif (strcmp(my_Simband_datafilename,'Shiju_tightness02')...
-        || strcmp(my_Simband_datafilename,'Shiju_tightness01'))
-        temp_idx = find(new_ECG_peak_loc >= iiii_ECG_start & new_ECG_peak_loc <= iiii_ECG_end);
-        refECG_pkloc = new_ECG_peak_loc(temp_idx) - iiii_ECG_start;
-        wbwrefHR = 60./diff(refECG_pkloc)*fs;
+        disp('ECG peak is from pre-saved peaks.');
     else
         [refECG_pkloc,wbwrefHR] = myECGpeakdetection(Ref_ECG_buffer,fs);
+        disp('ECG peak is from Biosig peak detection.');
     end
     refECG_pkloc(refECG_pkloc < 1) = []; % change those possible zero index as one.
     refECG_pkloc(refECG_pkloc > 30*fs) = []; % remove those index greater than 30 second length.

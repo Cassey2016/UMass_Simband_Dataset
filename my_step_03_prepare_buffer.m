@@ -21,7 +21,7 @@ ACC_buffer = ACC(iiii_ACC_start:iiii_ACC_end);
 if iiii_ECG_start > length(aligned_ChestECG) 
     Ref_ECG_buffer = zeros(size(Simband_ECG_buffer)); % no enough reference ECG
 elseif iiii_ECG_end > length(aligned_ChestECG)
-    Ref_ECG_buffer = [aligned_ChestECG(iiii_ECG_start:end);zeros(length(Simband_ECG_buffer) - (length(aligned_ChestECG) - iiii_ECG_start),1)]; % some ref ECG with padded zeros.
+    Ref_ECG_buffer = [aligned_ChestECG(iiii_ECG_start:end);zeros(length(Simband_ECG_buffer) - (length(aligned_ChestECG) - iiii_ECG_start) - 1,1)]; % some ref ECG with padded zeros.
 else % enough ECG
     Ref_ECG_buffer = aligned_ChestECG(iiii_ECG_start:iiii_ECG_end);% Reference HR: peak detection for ECG
 end

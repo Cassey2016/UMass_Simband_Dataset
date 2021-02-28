@@ -33,6 +33,8 @@
 %         Simband_Subject - same as 'my_Simband_datafilename'.
 %         load_Simband_subject_name - all subjects user selected to run.
 %         subject_win_idx - the interval array from 1 to the countseg.
+%
+% Last Modification: Dong, 02/28/2021.
 function output_data = my_step_02_load_data(fs,fs_ACC,fs_PPG,aaa,...
                                              output_struct)
                                          
@@ -54,18 +56,17 @@ function output_data = my_step_02_load_data(fs,fs_ACC,fs_PPG,aaa,...
     % subfunction 4
     [new_ECG_peak_loc,new_ECG,seg_num_ECG,seg_num_peak] = my_load_ref_ECG_peak(my_Simband_datafilename,Simband_data_folder,fs);
 
-    bbb = 1; % loop index for shifting seconds.
-    shift_sec = bbb - 1;
+    shift_sec = 0;
     % subfunction 5
     [countseg,countlen] = my_count_total_seg(shift_sec,length(PPG),length(Simband_ECG),length(ACC),fs,fs_ACC,fs_PPG);
 
     % subfunction 6
     [start_win_idx,end_win_idx,subject_win_idx] = my_set_start_end_win_idx(user_input_subject,user_input_win,all_win_flag,aaa,countseg,start_win_idx,end_win_idx);
-    iiii_PPG_start = (start_win_idx-1) * 30 * fs_PPG + 1 + shift_sec * fs_PPG;
+    iiii_PPG_start = (start_win_idx-1) * 30 * fs_PPG + 1;
     iiii_PPG_end = iiii_PPG_start + 30 * fs_PPG - 1;
-    iiii_ECG_start = (start_win_idx-1) * 30 * fs + 1 + shift_sec * fs;
+    iiii_ECG_start = (start_win_idx-1) * 30 * fs + 1;
     iiii_ECG_end = iiii_ECG_start + 30 * fs - 1;
-    iiii_ACC_start = (start_win_idx-1) * 30 * fs_ACC + 1 + shift_sec * fs_ACC;
+    iiii_ACC_start = (start_win_idx-1) * 30 * fs_ACC + 1;
     iiii_ACC_end = iiii_ACC_start + 30 * fs_ACC - 1;
     count_ii = 0;
 
@@ -344,24 +345,15 @@ end
 
 % subfunction 6
 function [start_win_idx,end_win_idx,subject_win_idx] = my_set_start_end_win_idx(user_input_subject,user_input_win,all_win_flag,aaa,countseg,start_win_idx,end_win_idx)
+subject_win_idx = 1:countseg;
 if user_input_subject == 0  % all subjects
 % all windows or custom window?
-        if all_win_flag == true
-            end_win_idx = countseg;
-            subject_win_idx = 1:countseg;
-        else
-                subject_win_idx = 1:countseg;
-        end
-else % user specific subject.
     if all_win_flag == true
-        end_win_idx = countseg;
-        subject_win_idx = 1:countseg;
-    else
-        if clean_win_run_flag
-            subject_win_idx = clean_win_idx;
-        else
-            subject_win_idx = 1:countseg;
-        end
+        end_win_idx = countseg; % It was NaN.
+    end
+else % user specific subject.
+    if user_input_win == 0
+        end_win_idx = countseg; % It was NaN.
     end
 end
 end
