@@ -2,7 +2,7 @@
 
 ## Preparation
 
-Please download the [Data](https://drive.google.com/file/d/1Sw73g2IRzBPs9K19lQozsc64KwX2PHbM/view?usp=sharing), unzip it and name the folder as `Data`.
+Please download the [Data](https://www.synapse.org/#!Synapse:syn23565056/wiki/608635) (Please register a Synapse account, send your Synapse ID and your true name and organization affiliation to Dong Han (dong.han@uconn.edu) if you want to download the dataset. Thank you.), unzip it and name the folder as `Data`.
 
 Please put this code folder and the `Data` folder under same root folder, like this:
 
